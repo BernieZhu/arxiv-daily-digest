@@ -20,9 +20,11 @@ import requests
 from bs4 import BeautifulSoup
 
 try:
-    import anthropic
+    import openai
+    from openai import OpenAI
 except ImportError:
-    anthropic = None
+    openai = None
+    OpenAI = None
 
 ARXIV_ABS_URL = "https://arxiv.org/abs/{}"
 ARXIV_HTML_URL = "https://arxiv.org/html/{}"
@@ -31,15 +33,22 @@ ARXIV_LIST_PASTWEEK_URL = "https://arxiv.org/list/{}/pastweek?show=2000"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(SCRIPT_DIR, "arxiv_config.json")
 
-def _claude_create_with_retry(client, max_retries=5, **kwargs):
-    """Call client.messages.create with exponential backoff on 529 overloaded errors."""
+DEEPSEEK_BASE_URL = "https://api.deepseek.com"
+DEEPSEEK_MODEL = "deepseek-v4-flash"
+
+# Transient HTTP statuses worth retrying (rate limit / server overload).
+_RETRYABLE_STATUS = {429, 500, 502, 503, 529}
+
+
+def _chat_create_with_retry(client, max_retries=5, **kwargs):
+    """Call chat.completions.create with exponential backoff on transient errors."""
     for attempt in range(max_retries):
         try:
-            return client.messages.create(**kwargs)
-        except anthropic.APIStatusError as e:
-            if e.status_code == 529 and attempt < max_retries - 1:
+            return client.chat.completions.create(**kwargs)
+        except openai.APIStatusError as e:
+            if e.status_code in _RETRYABLE_STATUS and attempt < max_retries - 1:
                 wait = 2 ** attempt * 10  # 10s, 20s, 40s, 80s
-                print(f"  API overloaded (529), retrying in {wait}s (attempt {attempt + 1}/{max_retries})...")
+                print(f"  API error {e.status_code}, retrying in {wait}s (attempt {attempt + 1}/{max_retries})...")
                 time.sleep(wait)
             else:
                 raise
@@ -50,16 +59,16 @@ def load_config(path=None):
         return json.load(f)
 
 
-def get_claude_client():
-    if anthropic is None:
-        print("Error: anthropic package required. Install with: pip install anthropic")
+def get_deepseek_client():
+    if OpenAI is None:
+        print("Error: openai package required. Install with: pip install openai")
         sys.exit(1)
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
-        print("Error: ANTHROPIC_API_KEY environment variable not set.")
-        print("Export it with: export ANTHROPIC_API_KEY=your-key-here")
+        print("Error: DEEPSEEK_API_KEY environment variable not set.")
+        print("Export it with: export DEEPSEEK_API_KEY=your-key-here")
         sys.exit(1)
-    return anthropic.Anthropic(api_key=api_key)
+    return OpenAI(api_key=api_key, base_url=DEEPSEEK_BASE_URL)
 
 
 # ---------------------------------------------------------------------------
@@ -292,12 +301,12 @@ def fetch_paper_metadata(papers):
 
 
 # ---------------------------------------------------------------------------
-# Step 2c: Claude verification for abstract-matched candidates
+# Step 2c: LLM verification for abstract-matched candidates
 # ---------------------------------------------------------------------------
 
-def _verify_with_claude(client, papers, keywords):
-    """Send papers to Claude for semantic keyword verification.
-    Returns list of papers that Claude confirms as relevant."""
+def _verify_with_llm(client, papers, keywords):
+    """Send papers to the LLM for semantic keyword verification.
+    Returns list of papers that the LLM confirms as relevant."""
     if not papers:
         return []
 
@@ -336,16 +345,18 @@ Respond with ONLY a JSON array. No explanation, no reasoning, no markdown fences
 Format: [{{"index": 0, "keyword": "matched keyword"}}]
 If no papers match, respond with exactly: []"""
 
-        print(f"  Asking Claude to verify batch {batch_start // batch_size + 1} ({len(batch)} papers)...")
-        response = _claude_create_with_retry(
+        print(f"  Asking the LLM to verify batch {batch_start // batch_size + 1} ({len(batch)} papers)...")
+        response = _chat_create_with_retry(
             client,
-            model="claude-sonnet-4-6",
+            model=DEEPSEEK_MODEL,
             max_tokens=2048,
-            system="You are a JSON-only filter. Output raw JSON arrays only. Never explain your reasoning. Never use markdown code fences.",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are a JSON-only filter. Output raw JSON arrays only. Never explain your reasoning. Never use markdown code fences."},
+                {"role": "user", "content": prompt},
+            ],
         )
 
-        text = response.content[0].text.strip()
+        text = response.choices[0].message.content.strip()
         json_match = re.search(r"\[.*\]", text, re.DOTALL)
         if json_match:
             try:
@@ -374,12 +385,12 @@ If no papers match, respond with exactly: []"""
 
 
 # ---------------------------------------------------------------------------
-# Step 2 combined: Filter pipeline (title → snippet → metadata → Claude)
+# Step 2 combined: Filter pipeline (title → snippet → metadata → LLM)
 # ---------------------------------------------------------------------------
 
-def _claude_title_scan(client, papers, keywords):
-    """Send papers with only titles to Claude for a quick relevance scan.
-    Returns papers Claude thinks might be relevant (need full abstract check)."""
+def _llm_title_scan(client, papers, keywords):
+    """Send papers with only titles to the LLM for a quick relevance scan.
+    Returns papers the LLM thinks might be relevant (need full abstract check)."""
     if not papers:
         return []
 
@@ -403,16 +414,18 @@ Titles:
 
 Respond with ONLY a JSON array of integers, e.g. [0, 3, 7]. If none match, respond with: []"""
 
-        print(f"  Claude title scan batch {batch_start // batch_size + 1} ({len(batch)} titles)...")
-        response = _claude_create_with_retry(
+        print(f"  LLM title scan batch {batch_start // batch_size + 1} ({len(batch)} titles)...")
+        response = _chat_create_with_retry(
             client,
-            model="claude-sonnet-4-6",
+            model=DEEPSEEK_MODEL,
             max_tokens=2048,
-            system="You are a JSON-only filter. Output raw JSON arrays only. Never explain your reasoning.",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[
+                {"role": "system", "content": "You are a JSON-only filter. Output raw JSON arrays only. Never explain your reasoning."},
+                {"role": "user", "content": prompt},
+            ],
         )
 
-        text = response.content[0].text.strip()
+        text = response.choices[0].message.content.strip()
         json_match = re.search(r"\[[\d\s,]*\]", text)
         if json_match:
             try:
@@ -430,8 +443,8 @@ Respond with ONLY a JSON array of integers, e.g. [0, 3, 7]. If none match, respo
 def filter_papers(client, papers, keywords, acronym_expansions=None):
     """Four-tier filtering pipeline:
     1. Title keyword match (free) → accepted immediately
-    2. Snippet keyword match → fetch abstract → Claude verification
-    3. Remaining papers → Claude title scan → fetch abstract → keyword check on full abstract
+    2. Snippet keyword match → fetch abstract → LLM verification
+    3. Remaining papers → LLM title scan → fetch abstract → keyword check on full abstract
     4. No match → skipped
     Returns filtered papers with full metadata."""
     title_matched = []
@@ -450,10 +463,10 @@ def filter_papers(client, papers, keywords, acronym_expansions=None):
     print(f"  {len(snippet_candidates)} papers have keyword in snippet (need verification)")
     print(f"  {len(remaining)} papers need title scan")
 
-    # Tier 3: Claude scans remaining titles for potential relevance
-    title_scan_candidates = _claude_title_scan(client, remaining, keywords)
+    # Tier 3: LLM scans remaining titles for potential relevance
+    title_scan_candidates = _llm_title_scan(client, remaining, keywords)
     if title_scan_candidates:
-        print(f"  {len(title_scan_candidates)} papers flagged by Claude title scan, fetching abstracts...")
+        print(f"  {len(title_scan_candidates)} papers flagged by LLM title scan, fetching abstracts...")
         fetch_paper_metadata(title_scan_candidates)
         # Check full abstracts for keyword matches
         abstract_confirmed = []
@@ -473,13 +486,13 @@ def filter_papers(client, papers, keywords, acronym_expansions=None):
         print(f"  Fetching metadata for {len(all_candidates)} candidate papers...")
         fetch_paper_metadata(all_candidates)
 
-    # Claude verifies only the snippet-matched papers (title-matched are already accepted)
-    claude_verified = _verify_with_claude(client, snippet_candidates, keywords)
+    # The LLM verifies only the snippet-matched papers (title-matched are already accepted)
+    llm_verified = _verify_with_llm(client, snippet_candidates, keywords)
 
     # Combine and deduplicate
     seen = set()
     filtered = []
-    for p in title_matched + claude_verified + abstract_confirmed:
+    for p in title_matched + llm_verified + abstract_confirmed:
         if p["id"] not in seen:
             seen.add(p["id"])
             filtered.append(p)
@@ -488,11 +501,11 @@ def filter_papers(client, papers, keywords, acronym_expansions=None):
 
 
 # ---------------------------------------------------------------------------
-# Abstract mode: generate summaries with Claude
+# Abstract mode: generate summaries with the LLM
 # ---------------------------------------------------------------------------
 
 def _summarize_paper(client, paper):
-    """Fetch HTML page and generate 2-3 sentence summary with Claude."""
+    """Fetch HTML page and generate 2-3 sentence summary with the LLM."""
     url = ARXIV_HTML_URL.format(paper["id"])
     try:
         resp = requests.get(url, timeout=60)
@@ -513,17 +526,17 @@ Content:
 Return ONLY the 2-3 sentence summary."""
 
     print(f"    Summarizing {paper['id']}...")
-    response = _claude_create_with_retry(
+    response = _chat_create_with_retry(
         client,
-        model="claude-sonnet-4-6",
+        model=DEEPSEEK_MODEL,
         max_tokens=512,
         messages=[{"role": "user", "content": prompt}],
     )
-    paper["summary"] = response.content[0].text.strip()
+    paper["summary"] = response.choices[0].message.content.strip()
 
 
 def generate_summaries(client, papers):
-    """Generate Claude summaries for all papers (abstract mode only)."""
+    """Generate LLM summaries for all papers (abstract mode only)."""
     for i, p in enumerate(papers):
         print(f"  [{i+1}/{len(papers)}] Summarizing {p['id']}...")
         try:
@@ -616,7 +629,7 @@ def process_date(date_str, papers_for_date, config, mode, client):
         print("  No papers, skipping.")
         return
 
-    # Filter: title match → snippet match → Claude verify (fetches metadata for candidates only)
+    # Filter: title match → snippet match → LLM verify (fetches metadata for candidates only)
     print("Step 2: Filtering by keywords...")
     filtered = filter_papers(client, papers_for_date, config["keywords"],
                              config.get("acronym_expansions", {}))
@@ -700,7 +713,7 @@ def main():
         print("Error: End date must be >= start date")
         sys.exit(1)
 
-    client = get_claude_client()
+    client = get_deepseek_client()
 
     target_dates = []
     cur = start_dt

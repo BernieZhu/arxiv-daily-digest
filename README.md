@@ -1,4 +1,4 @@
-# claude-arxiv-daily-digest
+# arxiv-daily-digest
 
 A configurable daily arXiv paper tracker. Set your categories, keywords, and preferred mode — get the latest papers filtered and summarized into a clean markdown digest.
 
@@ -12,8 +12,8 @@ A configurable daily arXiv paper tracker. Set your categories, keywords, and pre
 ### 1. Clone
 
 ```bash
-git clone https://github.com/BernieZhu/claude-arxiv-daily-digest.git
-cd claude-arxiv-daily-digest
+git clone https://github.com/BernieZhu/arxiv-daily-digest.git
+cd arxiv-daily-digest
 ```
 
 ### 2. Edit the config
@@ -39,14 +39,14 @@ Best for fully automated daily digests WITHOUT a local machine.
 
 1. Go to your repo on GitHub → **Settings** → **Secrets and variables** → **Actions**
 2. Click **New repository secret**
-   - **Name:** `ANTHROPIC_API_KEY`
-   - **Secret:** your Anthropic API key
+   - **Name:** `DEEPSEEK_API_KEY`
+   - **Secret:** your DeepSeek API key
 3. Go to **Settings** → **Actions** → **General** → scroll to **Workflow permissions** → select **Read and write permissions** → Save
 4. That's it — the workflow runs daily at 9:00 AM PDT and commits results to `markdown/`
 
 You can also trigger it manually from the **Actions** tab → **Daily arXiv Digest** → **Run workflow**.  
 
-It uses Claude Sonnet 4.6 API and typically costs under $0.10 per day in `direct` mode.
+It uses the DeepSeek `deepseek-v4-flash` API and typically costs only a few cents per day in `direct` mode.
 
 ---
 
@@ -83,7 +83,7 @@ Best for backfills, date ranges, or running from a server/cron job.
 
 ```bash
 pip install -r requirements.txt
-export ANTHROPIC_API_KEY=your-key-here
+export DEEPSEEK_API_KEY=your-key-here
 ```
 
 **Usage:**
@@ -135,7 +135,7 @@ The dominant sequence transduction models are based on complex recurrent or conv
 ## Repo Structure
 
 ```
-claude-arxiv-daily-digest/
+arxiv-daily-digest/
 ├── README.md                 # This file
 ├── LICENSE                   # MIT License
 ├── .gitignore                # Ignores output digests and OS files
@@ -154,4 +154,4 @@ claude-arxiv-daily-digest/
 
 ---
 
-Built with [Claude Cowork](https://claude.com/product/cowork) & [Claude API](https://console.anthropic.com/) · Papers from [arXiv.org](https://arxiv.org)
+Built with [Claude Cowork](https://claude.com/product/cowork) & [DeepSeek API](https://platform.deepseek.com/) · Papers from [arXiv.org](https://arxiv.org)

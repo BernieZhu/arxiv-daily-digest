@@ -28,7 +28,7 @@ jobs:
 
       - name: Run arXiv digest
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: python arxiv_digest.py
 
       - name: Commit and push results
