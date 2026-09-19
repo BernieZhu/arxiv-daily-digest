@@ -2,12 +2,32 @@
 
 **Mode:** direct
 **Categories:** cs.AI, cs.LG, cs.RO, cs.CV
-**Keywords:** VLA, agentic robot, robot harness
-**Papers found:** 11
+**Keywords:** VLA, RSI, agentic robot, self-improving robot, self-evolving robot, robot harness
+**Papers found:** 13
 
 ---
 
-## 1. Planning in the Backbone: DiffAdapterVLA for Native Continuous Trajectory Generation with Driving VLMs
+## 1. RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments
+
+**Authors:** Sibo Zhu, Shicheng Fan, Xinyue Wang, ..., Kun Zhou, Biwei Huang
+**arXiv:** [2609.15364](https://arxiv.org/abs/2609.15364)
+**Categories:** Artificial Intelligence (cs.AI); Computation and Language (cs.CL); Computer Vision and Pattern Recognition (cs.CV)
+
+Digital agents must often adapt to new environments whose interfaces, tools, and failure modes are not fully captured by pretrained models. We introduce \textbf{RSIAgent}, a training-free multi-agent framework for recursive self-improvement through autonomous memory construction. RSIAgent coordinates curriculum, actor, and verifier agents to continually explore the environment, validate outcomes, and retain environment-specific knowledge, including reusable causal relationships between actions, conditions, and consequences. It further adopts a \textbf{broad-then-deep} exploration strategy, combining parallel broad recursive self-exploration for discovering diverse environment structures with focused deep self-exploration for uncovering hard cases, hidden constraints, boundary conditions, and previously unknown causal dependencies. The resulting memory is frozen and can be directly reused for downstream tasks without updating model parameters. Experiments on OSWorld-v2 and Agent's Last Exam show that RSIAgent substantially improves strong open-source models, enabling Kimi-K3 and GLM-5.3 to outperform frontier closed-source models including GPT-6.
+
+---
+
+## 2. Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement
+
+**Authors:** Hongyao Tang, Yi Ma, Pengyi Li, Yifu Yuan
+**arXiv:** [2609.13406](https://arxiv.org/abs/2609.13406)
+**Categories:** Artificial Intelligence (cs.AI); Machine Learning (cs.LG)
+
+When we speak of recursive self-improvement (RSI), are we speaking of a phenomenon, a mechanism, or a prospect? Towards autonomous and evolving intelligence, RSI is being claimed at many scales, while no single framework that formally describes these emerging instances exists. Its counterpart in the classical realm, iterative policy improvement, is characterized by generalized policy iteration (GPI), a framework of broad applicability with well-understood theoretical properties, but only where the update principle and the evaluation base lie outside the agent. In this paper, we propose Generalized Agent Iteration (GAI), a formal framework that describes iterative policy improvement and RSI as two cases of a single learning paradigm. GAI defines the agent as a configuration of modifiable components within a system and models the learning process as a cycle of agent evaluation and agent improvement. Two pivotal dials then distinguish the instances: whether the improving mechanism is part of the agent and whether the standard it is measured against is grounded outside it. The former dial delineates the boundary between GPI and RSI, and the latter determines a system's polarity as anchored, goal drift, or fully self-referential. Moreover, we use these coordinates to place existing systems on the same two axes and make the defects of recursive self-improvement statable one condition at a time. We see this paper as a first step toward exploring a formal characterization of RSI that rests on the classical account, makes existing systems comparable, and provides a principled basis for analyzing and designing new ones.
+
+---
+
+## 3. Planning in the Backbone: DiffAdapterVLA for Native Continuous Trajectory Generation with Driving VLMs
 
 **Authors:** Changxin Lu, Xiaoliang Meng, Yu Wu, ..., Kaixuan Zhou, Yadong Shao
 **arXiv:** [2609.15322](https://arxiv.org/abs/2609.15322)
@@ -17,7 +37,7 @@ Pretrained driving vision-language models (VLMs) integrate visual, route, langua
 
 ---
 
-## 2. IMPACT-VLA: Interaction-aware Multimodal Propagation Attribution via Counterfactual Trajectories for Vision-Language-Action Policies
+## 4. IMPACT-VLA: Interaction-aware Multimodal Propagation Attribution via Counterfactual Trajectories for Vision-Language-Action Policies
 
 **Authors:** Jinwoong Kim, Sangjin Park
 **arXiv:** [2609.15005](https://arxiv.org/abs/2609.15005)
@@ -27,7 +47,7 @@ Vision-Language-Action (VLA) policies perform robot manipulation tasks using mul
 
 ---
 
-## 3. Task-Specified Active Metrological Inspection with Measurement-Steered VLA Manipulation and Deterministic Evidence Gating
+## 5. Task-Specified Active Metrological Inspection with Measurement-Steered VLA Manipulation and Deterministic Evidence Gating
 
 **Authors:** Zhiling Chen, Jingzhan Ge, Ruimin Chen, ..., David Gorsich, Farhad Imani
 **arXiv:** [2609.14219](https://arxiv.org/abs/2609.14219)
@@ -37,7 +57,7 @@ High-mix low-volume (HMLV) manufacturing requires inspection systems to adapt to
 
 ---
 
-## 4. ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting
+## 6. ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting
 
 **Authors:** Chenwei Wang, Dianye Huang, Match W.L. Ko, Chenjia Bai, Zhongliang Jiang
 **arXiv:** [2609.13851](https://arxiv.org/abs/2609.13851)
@@ -47,7 +67,7 @@ Post-training vision-language-action (VLA) models for specific robots and tasks 
 
 ---
 
-## 5. ShieldVLA: Feasibility-Aware Safety Alignment for Vision-Language-Action Models
+## 7. ShieldVLA: Feasibility-Aware Safety Alignment for Vision-Language-Action Models
 
 **Authors:** Manan Tayal, Akshay Nambi
 **arXiv:** [2609.13231](https://arxiv.org/abs/2609.13231)
@@ -57,7 +77,7 @@ Vision-Language-Action (VLA) models demonstrate strong generalization in robotic
 
 ---
 
-## 6. When Faster VLA Deployment Changes Closed-Loop Behavior: Task Success-Latency Analysis of SmolVLA Across PyTorch and ONNX Variants
+## 8. When Faster VLA Deployment Changes Closed-Loop Behavior: Task Success-Latency Analysis of SmolVLA Across PyTorch and ONNX Variants
 
 **Authors:** Rafiqul Islam
 **arXiv:** [2609.14146](https://arxiv.org/abs/2609.14146)
@@ -67,7 +87,7 @@ Vision-language-action (VLA) deployment can reduce inference latency while chang
 
 ---
 
-## 7. Beyond Single-Axis Testing: Paired Evaluation of Compound Robustness in Vision-Language-Action Policies
+## 9. Beyond Single-Axis Testing: Paired Evaluation of Compound Robustness in Vision-Language-Action Policies
 
 **Authors:** Hiroki Sawada, Shunichi Kasahara
 **arXiv:** [2609.15940](https://arxiv.org/abs/2609.15940)
@@ -77,7 +97,7 @@ Vision-language-action policies are typically evaluated one perturbation at a ti
 
 ---
 
-## 8. What Makes an Efficient VLA? Navigating Action-Head Design, Scaling, and Latency
+## 10. What Makes an Efficient VLA? Navigating Action-Head Design, Scaling, and Latency
 
 **Authors:** Luoyang Sun, Guoyang Xia, Fengfa Li, ..., Jun Wang, Cheng Deng
 **arXiv:** [2609.13984](https://arxiv.org/abs/2609.13984)
@@ -87,9 +107,9 @@ Vision-Language-Action (VLA) models combine a pretrained vision encoder, a langu
 
 ---
 
-## 9. GeomVLA: Unifying Scene, Motion, and Action in 3D
+## 11. GeomVLA: Unifying Scene, Motion, and Action in 3D
 
-**Authors:** Ziyin Xiong, Nikos Gkanatsios, Moritz Reuss, Katerina Fragkiadaki
+**Authors:** Ziyin Xiong, Nikolaos Gkanatsios, Moritz Reuss, Katerina Fragkiadaki
 **arXiv:** [2609.13812](https://arxiv.org/abs/2609.13812)
 **Categories:** Robotics (cs.RO)
 
@@ -97,7 +117,7 @@ We present GeomVLA, a Vision-Language-Action (VLA) model that unifies perception
 
 ---
 
-## 10. GROOVE: Geometry-Guided Reduction of Operational-Space Jerk in VLA Execution
+## 12. GROOVE: Geometry-Guided Reduction of Operational-Space Jerk in VLA Execution
 
 **Authors:** Sangho Yun, Minsoo Kim, Minwoo Cho, Hwanjo Yu
 **arXiv:** [2609.13695](https://arxiv.org/abs/2609.13695)
@@ -107,12 +127,12 @@ Chunked vision language action (VLA) policies execute several commands per query
 
 ---
 
-## 11. How to Better Train VLAs: Lessons Learned From the REAL-I Challenge at ICRA 2026
+## 13. How to Better Train VLAs: Lessons Learned From the REAL-I Challenge at ICRA 2026
 
 **Authors:** Jiaming Wang, Jizhuo Chen, Diwen Liu, ..., Yongping Pan, Harold Soh
 **arXiv:** [2609.13679](https://arxiv.org/abs/2609.13679)
 **Categories:** Robotics (cs.RO)
 
-How can robot policies learn more effectively from a fixed demonstration budget? The first Real-world Embodied AI Learning (REAL-I) Challenge at ICRA 2026 examined this question through simulation, real-robot evaluation, and an on-site final on a shared dual-arm humanoid platform. We describe the challenge tasks, data and deployment interfaces, and competition results, then compare the approaches contributed by NUS-CLEAR, RCL-Lab, and this http URL. Their systems combined pretrained vision-language-action models and task-specific imitation policies with different strategies for data curation, staged adaptation, checkpoint selection, and action-space design. The team reports highlight the importance of adapting to the deployment environment while retaining prior capabilities, treating demonstration quality at an appropriate temporal scale, and suppressing errors in inactive robot components. They also expose the limitations of offline action-prediction metrics for forecasting closed-loop success. These observations motivate a view of fixed-data robot learning that integrates data, adaptation, evaluation, and deployment.
+How can robot policies learn more effectively from a fixed demonstration budget? The first Real-world Embodied AI Learning (REAL-I) Challenge at ICRA 2026 examined this question through simulation, real-robot evaluation, and an on-site final on a shared dual-arm humanoid platform. We describe the challenge tasks, data and deployment interfaces, and competition results, then compare the approaches contributed by NUS-CLEAR, RCL-Lab, and DeepTouch AI. Their systems combined pretrained vision-language-action models and task-specific imitation policies with different strategies for data curation, staged adaptation, checkpoint selection, and action-space design. The team reports highlight the importance of adapting to the deployment environment while retaining prior capabilities, treating demonstration quality at an appropriate temporal scale, and suppressing errors in inactive robot components. They also expose the limitations of offline action-prediction metrics for forecasting closed-loop success. These observations motivate a view of fixed-data robot learning that integrates data, adaptation, evaluation, and deployment.
 
 ---

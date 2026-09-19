@@ -20,14 +20,18 @@
 
   "keywords": [
     "VLA",
+    "RSI",
     "agentic robot",
+    "self-improving robot",
+    "self-evolving robot",
     "robot harness"
   ],
 
   "acronym_expansions": {
     "LLM": ["Large Language Model"],
     "VLM": ["Vision-Language Model"],
-    "VLA": ["Vision-Language-Action"]
+    "VLA": ["Vision-Language-Action"],
+    "RSI": ["Recursive self-improvement"]
   },
 
   "max_papers_per_day": 100,

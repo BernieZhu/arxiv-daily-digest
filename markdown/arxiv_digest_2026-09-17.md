@@ -2,7 +2,7 @@
 
 **Mode:** direct
 **Categories:** cs.AI, cs.LG, cs.RO, cs.CV
-**Keywords:** VLA, agentic robot, robot harness
+**Keywords:** VLA, RSI, agentic robot, self-improving robot, self-evolving robot, robot harness
 **Papers found:** 10
 
 ---

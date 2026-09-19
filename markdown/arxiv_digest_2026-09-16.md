@@ -2,12 +2,22 @@
 
 **Mode:** direct
 **Categories:** cs.AI, cs.LG, cs.RO, cs.CV
-**Keywords:** VLA, agentic robot, robot harness
-**Papers found:** 5
+**Keywords:** VLA, RSI, agentic robot, self-improving robot, self-evolving robot, robot harness
+**Papers found:** 6
 
 ---
 
-## 1. FluxVLA Engine: A One-Stop VLA Engineering Platform for Embodied Intelligence
+## 1. ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents
+
+**Authors:** Shuhan Xue, Jianyuan Zhong, Ziyuan Nan, ..., Yingcheng Wu, Ling Yang
+**arXiv:** [2609.17523](https://arxiv.org/abs/2609.17523)
+**Categories:** Artificial Intelligence (cs.AI); Computation and Language (cs.CL)
+
+We introduce and release ScienceBuddy, an interactive scientific research workspace that brings continually improving scientific agents into researchers' everyday workflows. ScienceBuddy supports researchers in carrying out scientific tasks while transforming their requests, feedback, and execution evidence into tasks and evaluation rubrics for continual learning. At its core is recursive-in-recursive self-improvement, a paradigm that couples harness evolution with model reinforcement learning: the inner recursion improves the harness with the model fixed, while the outer recursion trains the model under the improved harness. Harness evolution shapes training experience, and model learning creates new opportunities for harness adaptation. We present case studies of researcher interaction, harness refinement, and model learning, with the benchmark cases spanning four scientific task families. By releasing ScienceBuddy as a research product, we make this paradigm available to the scientific community and take a step toward discovery intelligence: scientific AI that advances through sustained collaboration with researchers and evolves alongside the research it supports. Website: this http URL
+
+---
+
+## 2. FluxVLA Engine: A One-Stop VLA Engineering Platform for Embodied Intelligence
 
 **Authors:** Yinhao Li, Weixin Mao, Zihan Lan, ..., Chengqi Shi, Hua Chen
 **arXiv:** [2609.17210](https://arxiv.org/abs/2609.17210)
@@ -17,7 +27,7 @@ Vision-language-action (VLA) models, world-action models (WAMs), and offline rei
 
 ---
 
-## 2. Intrinsic Robot Rewarding: Reusing VLA Representations for Autonomous Evaluation and Policy Improvement
+## 3. Intrinsic Robot Rewarding: Reusing VLA Representations for Autonomous Evaluation and Policy Improvement
 
 **Authors:** Tobias Schaffer, Mohab Elkhayat, Daniela Nicklas, Mustafa Almohamad, Elham Al-Fuqara
 **arXiv:** [2609.17115](https://arxiv.org/abs/2609.17115)
@@ -27,7 +37,7 @@ Vision-language-action (VLA) systems already bring together two valuable resourc
 
 ---
 
-## 3. SAVLA: Symmetry-Aware Vision-Language-Action Models for Robotic Manipulation
+## 4. SAVLA: Symmetry-Aware Vision-Language-Action Models for Robotic Manipulation
 
 **Authors:** Junle Li, Weixian Waylon Li, Fuxiang Wu, Fusheng Hao, Fengxiang He
 **arXiv:** [2609.16641](https://arxiv.org/abs/2609.16641)
@@ -37,7 +47,7 @@ Vision-language-action (VLA) models have become the dominant paradigm for langua
 
 ---
 
-## 4. Dense to MoE Adaptation for Compact Vision Language Action Policies
+## 5. Dense to MoE Adaptation for Compact Vision Language Action Policies
 
 **Authors:** Muchun Niu, Shuang Chen, Yuzhou Wu, Linfeng Zhang
 **arXiv:** [2609.16503](https://arxiv.org/abs/2609.16503)
@@ -47,7 +57,7 @@ Vision language action (VLA) policies continue to grow in parameter count, makin
 
 ---
 
-## 5. sensVLA: Spatially-Grounded Vision-Language-Action Model for Autonomous Wheel Loader
+## 6. sensVLA: Spatially-Grounded Vision-Language-Action Model for Autonomous Wheel Loader
 
 **Authors:** Gopi Krishna Erabati, Bjarne Johannsen, Angus Stewart, Vardeep Singh Sandhu
 **arXiv:** [2609.17021](https://arxiv.org/abs/2609.17021)
