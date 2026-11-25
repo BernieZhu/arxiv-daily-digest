@@ -21,6 +21,7 @@
   "keywords": [
     "VLA",
     "RSI",
+    "RUA",
     "agentic robot",
     "self-improving robot",
     "self-evolving robot",
@@ -31,7 +32,8 @@
     "LLM": ["Large Language Model"],
     "VLM": ["Vision-Language Model"],
     "VLA": ["Vision-Language-Action"],
-    "RSI": ["Recursive self-improvement"]
+    "RSI": ["Recursive self-improvement"],
+    "RUA": ["Robot-use agent"]
   },
 
   "max_papers_per_day": 100,
